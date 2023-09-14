@@ -3,6 +3,7 @@ info:
   version: "1.0.0"
   title: "API de Gestion des Transactions"
   description: "API permettant de gérer les transactions"
+host: localhost:3001
 basePath: "/api/v1"
 securityDefinitions:
   BearerAuth:
