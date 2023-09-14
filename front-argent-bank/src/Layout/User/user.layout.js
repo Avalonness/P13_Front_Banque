@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile, updateProfile } from '../../Shares/Services/userProfile.service';
 import { setProfile } from '../../Shares/redux/slices/authSlice';
 import AccountComposant from "../../Composant/AccountList/accountlisst.composant";
 
 function UserLayout() {
+  const navigate = useNavigate();  
   const dispatch = useDispatch();
   const profile = useSelector(state => state.auth.profile);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -21,11 +23,12 @@ function UserLayout() {
             dispatch(setProfile(data));
         } catch (error) {
             console.error('Failed to fetch user profile:', error.message);
+            navigate('/');
         }
     }
 
     fetchUserProfile();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -83,7 +86,7 @@ function UserLayout() {
                   onChange={handleChange} 
                 />
               </label>
-              <button type="submit">Save Changes</button>
+              <button type="submit" className='edit-button'>Save Changes</button>
             </form>
           )}
         </div>

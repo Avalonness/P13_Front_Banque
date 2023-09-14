@@ -25,10 +25,16 @@ paths:
       responses:
         200:
           description: "Succès. Retourne la liste des transactions groupées par compte."
+          schema:
+            $ref: '#/definitions/Transactions'
         401:
           description: "Non autorisé. L'utilisateur n'est pas authentifié."
+        403:
+          description: "Non autorisé"
+        500:
+          description: "Erreur interne"
       security:
-        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
+        - BearerAuth:
 
     post:
       summary: "Créer une nouvelle transaction"
@@ -39,13 +45,23 @@ paths:
           description: "Attach Bearer JWT token"
           required: true
           type: "string"
+        - name: "Body"
+          in: "body"
+          schema:
+            $ref: '#/definitions/transaction'
+      produces:
+        - application/json
       responses:
         201:
           description: "Créé avec succès. Retourne les détails de la nouvelle transaction."
         401:
           description: "Non autorisé. L'utilisateur n'est pas authentifié."
+        403:
+          description: "Non autorisé"
+        500:
+          description: "Erreur interne"
       security:
-        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
+        - BearerAuth:
 
   user/transactions/{transactionId}:
     get:
@@ -65,12 +81,20 @@ paths:
       responses:
         200:
           description: "Succès. Retourne les détails de la transaction."
+          schema:
+            $ref: '#/definitions/transaction'
         401:
           description: "Non autorisé. L'utilisateur n'est pas authentifié."
+
+        403:
+          description: "Non autorisé"
+
         404:
           description: "Non trouvé. La transaction avec l'ID spécifié n'a pas été trouvée."
+        500:
+          description: "Erreur interne"
       security:
-        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
+        - BearerAuth: []
 
     put:
       summary: "Modifier les détails d'une transaction"
@@ -86,36 +110,86 @@ paths:
           description: "ID de la transaction à modifier."
           required: true
           type: "string"
+        - name: "Body"
+          in: "body"
+          schema:
+            $ref: '#/definitions/transactionUpdate'
       responses:
-        204:
-          description: "Aucun contenu. La transaction a été modifiée avec succès."
+        200:
+          description: "La transaction a été modifiée avec succès."
+          schema:
+            $ref: '#/definitions/transaction'
         401:
           description: "Non autorisé. L'utilisateur n'est pas authentifié."
+        403:
+          description: "Non autorisé"
         404:
           description: "Non trouvé. La transaction avec l'ID spécifié n'a pas été trouvée."
+        500:
+          description: "Erreur interne"
       security:
-        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
-
-    delete:
-      summary: "Supprimer une transaction"
-      description: "Supprime une transaction existante."
-      parameters:
-        - name: "Authorization"
-          in: "header"
-          description: "Attach Bearer JWT token"
-          required: true
-          type: "string"
-        - name: "transactionId"
-          in: "path"
-          description: "ID de la transaction à supprimer."
-          required: true
-          type: "string"
-      responses:
-        204:
-          description: "Aucun contenu. La transaction a été supprimée avec succès."
-        401:
-          description: "Non autorisé. L'utilisateur n'est pas authentifié."
-        404:
-          description: "Non trouvé. La transaction avec l'ID spécifié n'a pas été trouvée."
-      security:
-        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
+        - BearerAuth: []
+  securityDefinitions:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+definitions:
+  Transactions:
+    type: array
+    items:
+      type: object
+      properties:
+        date:
+          type: string
+          description: date transaction
+        description:
+          type: string
+          description: description transaction
+        amount:
+          type: number
+          description: amount transaction
+        balance:
+          type: number
+          description: balance account
+        transactionType:
+          type: string
+          description: type transaction
+        category:
+          type: string
+          description: catégorie transaction
+        notes:
+          type: string
+          description: note transaction
+  transaction:
+      properties:
+        date:
+          type: string
+          description: date transaction
+        description:
+          type: string
+          description: description transaction
+        amount:
+          type: number
+          description: amount transaction
+        balance:
+          type: number
+          description: balance account
+        transactionType:
+          type: string
+          description: type transaction
+        category:
+          type: string
+          description: catégorie transaction
+        notes:
+          type: string
+          description: note transaction
+  transactionUpdate:
+    properties:
+      category:
+        type: string
+        description: catégorie transaction
+      notes:
+        type: string
+        description: note transaction
+      
