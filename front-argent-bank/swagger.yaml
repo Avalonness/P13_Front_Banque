@@ -129,7 +129,6 @@ paths:
         500:
           description: "Erreur interne"
       security:
-<<<<<<< HEAD
         - BearerAuth: []
   securityDefinitions:
     Bearer:
@@ -195,30 +194,3 @@ definitions:
         type: string
         description: note transaction
       
-=======
-        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
-
-    delete:
-      summary: "Supprimer une transaction"
-      description: "Supprime une transaction existante."
-      parameters:
-        - name: "Authorization"
-          in: "header"
-          description: "Attach Bearer JWT token"
-          required: true
-          type: "string"
-        - name: "transactionId"
-          in: "path"
-          description: "ID de la transaction à supprimer."
-          required: true
-          type: "string"
-      responses:
-        204:
-          description: "Aucun contenu. La transaction a été supprimée avec succès."
-        401:
-          description: "Non autorisé. L'utilisateur n'est pas authentifié."
-        404:
-          description: "Non trouvé. La transaction avec l'ID spécifié n'a pas été trouvée."
-      security:
-        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
->>>>>>> 34831d3c2a5accbbaa5b9e17490217c674937df5
