@@ -7,6 +7,7 @@ import NavBarLayout from './Layout/NavBar/navbar.layout';
 import FooterLayout from './Layout/Footer/footer.layout';
 import SignInLayout from './Layout/SignIn/signIn.layout';
 import UserLayout from './Layout/User/user.layout'
+import PrivateRoute from './Composant/PrivateRoute/privateRoute.component';
 import { store } from './Shares/store';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
           <div className="content">
             <NavBarLayout />
             <Routes>
-              <Route path="/user" element={<UserLayout />} />
+              <Route path="/user" element={<PrivateRoute component={UserLayout} />} />
               <Route path="/signin" element={<SignInLayout />} />
               <Route path="/" element={<AcceuilLayout />} />
             </Routes>

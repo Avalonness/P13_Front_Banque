@@ -3,7 +3,6 @@ info:
   version: "1.0.0"
   title: "API de Gestion des Transactions"
   description: "API permettant de gérer les transactions"
-host: localhost:3001
 basePath: "/api/v1"
 securityDefinitions:
   BearerAuth:
@@ -13,7 +12,7 @@ securityDefinitions:
     description: "Bearer Token pour l'authentification."
 
 paths:
-  user/transactions:
+  user/transactions/date:
     get:
       summary: "Obtenir toutes les transactions du mois en cours, groupées par compte"
       description: "Renvoie la liste des transactions du mois en cours, groupées par compte."
@@ -21,6 +20,11 @@ paths:
         - name: "Authorization"
           in: "header"
           description: "Attach Bearer JWT token"
+          required: true
+          type: "string"
+        - name: "Date"
+          in: "path"
+          description: "Mois pour lequel récupérer la transaction"
           required: true
           type: "string"
       responses:
@@ -35,8 +39,9 @@ paths:
         500:
           description: "Erreur interne"
       security:
-        - BearerAuth:
+        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
 
+  user/transactions:
     post:
       summary: "Créer une nouvelle transaction"
       description: "Crée une nouvelle transaction."
@@ -62,7 +67,7 @@ paths:
         500:
           description: "Erreur interne"
       security:
-        - BearerAuth:
+        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
 
   user/transactions/{transactionId}:
     get:
@@ -95,9 +100,9 @@ paths:
         500:
           description: "Erreur interne"
       security:
-        - BearerAuth: []
+        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
 
-    put:
+    patch:
       summary: "Modifier les détails d'une transaction"
       description: "Modifie les détails d'une transaction existante."
       parameters:
@@ -129,7 +134,7 @@ paths:
         500:
           description: "Erreur interne"
       security:
-        - BearerAuth: []
+        - BearerAuth: []  # Requiert une autorisation Bearer Token pour accéder à cette route.
   securityDefinitions:
     Bearer:
       type: apiKey
